@@ -1,11 +1,12 @@
 {% load menu_filters %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>☕ کافه سلی — منوی قهوه</title>
-<style>
+    <style>
         :root {
             --bg-dark: #1a1512;
             --bg-card: #2c241e;
@@ -247,9 +248,10 @@
         .item-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             gap: 1rem;
             margin-bottom: 0.5rem;
+            flex-direction: row;
         }
 
         .item-name {
@@ -322,10 +324,23 @@
         }
 
         @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            25% { transform: scale(1.15); }
-            50% { transform: scale(1); }
-            75% { transform: scale(1.1); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            25% {
+                transform: scale(1.15);
+            }
+
+            50% {
+                transform: scale(1);
+            }
+
+            75% {
+                transform: scale(1.1);
+            }
         }
 
         /* ===== Responsive ===== */
@@ -335,16 +350,20 @@
                 max-width: 100%;
                 min-height: 200px;
             }
+
             .cube-icon {
                 font-size: 3rem;
             }
+
             .cube-title {
                 font-size: 2rem;
             }
+
             .items-grid {
                 grid-template-columns: 1fr;
                 gap: 0.9rem;
             }
+
             .menu-card {
                 padding: 1.2rem;
             }
@@ -354,33 +373,41 @@
             .site-header h1 {
                 font-size: 1.9rem;
             }
+
             .category-cube {
                 min-height: 180px;
             }
+
             .cube-icon {
                 font-size: 2.5rem;
             }
+
             .cube-title {
                 font-size: 1.8rem;
             }
+
             .item-header {
-                flex-direction: column;
+                flex-direction: row;
+                /* Changed from column to row to keep price in front */
                 gap: 0.4rem;
             }
+
             .item-price {
-                align-self: flex-start;
+                align-self: center;
+                /* Aligns price vertically with the name */
                 font-size: 0.95rem;
             }
         }
     </style>
 </head>
+
 <body>
     <header class="site-header">
-        <h1>کافه سُلی</h1>        
+        <h1>کافه سُلی</h1>
     </header>
 
-<main class="menu-container">
-    {% if selected_category %}
+    <main class="menu-container">
+        {% if selected_category %}
         <!-- Show items for selected category -->
         <div class="section-header">
             <span class="section-icon">{{ selected_category.icon }}</span>
@@ -413,12 +440,12 @@
             {% endfor %}
         </div>
 
-    {% else %}
+        {% else %}
         <!-- Show category cubes -->
         <div class="category-grid">
             {% for category in categories %}
-            <a href="{% url 'menu' %}?category={{ category.id }}" class="category-cube" 
-               style="background-image: url('{{ category.image.url }}');">
+            <a href="{% url 'menu' %}?category={{ category.id }}" class="category-cube"
+                style="background-image: url('{{ category.image.url }}');">
                 <span class="cube-icon">{{ category.icon }}</span>
                 <span class="cube-title">{{ category.name }}</span>
             </a>
@@ -426,13 +453,14 @@
             <p>هیچ دسته‌ای وجود ندارد.</p>
             {% endfor %}
         </div>
-    {% endif %}
-</main>
+        {% endif %}
+    </main>
 
     <footer class="site-footer">
-        <p>ساخته شده با <span class="heart">❤</span> در کافه سُلی</p>        
+        <p>ساخته شده با <span class="heart">❤</span> در کافه سُلی</p>
         <p style="margin-top:0.5rem; font-size:0.8rem; opacity:0.6;">بابل، شهرک بهزاد</p>
     </footer>
 
 </body>
+
 </html>
