@@ -1,0 +1,410 @@
+{% load menu_filters %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>☕ کافه سلی — منوی قهوه</title>
+<style>
+        :root {
+            --bg-dark: #1a1512;
+            --bg-card: #2c241e;
+            --bg-card-hover: #3a2f27;
+            --text-primary: #f5ebe0;
+            --text-secondary: #d4c5b5;
+            --gold: #d4a056;
+            --gold-light: #e8c88a;
+            --accent: #c17a3c;
+            --border-dark: #4a3d33;
+            --shadow-dark: 0 8px 25px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.7);
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-sans: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(193, 122, 60, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(212, 160, 86, 0.03) 0%, transparent 50%);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .site-header {
+            text-align: center;
+            padding: 3rem 1.5rem 2rem;
+        }
+
+        .site-header h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(2.2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .site-header .tagline {
+            color: var(--text-secondary);
+            font-style: italic;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .menu-container {
+            max-width: 1100px;
+            margin: 2rem auto 3rem;
+            padding: 0 1.5rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* ===== Category Navigation Buttons ===== */
+        .category-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .category-btn {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-dark);
+            border-radius: 50px;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: capitalize;
+        }
+
+        .category-btn:hover {
+            background: var(--bg-card-hover);
+            color: var(--gold-light);
+            border-color: rgba(212, 160, 86, 0.3);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .category-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 4px 14px rgba(193, 122, 60, 0.4);
+        }
+
+        /* ===== Category Section Spacing ===== */
+        .menu-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header .section-icon {
+            font-size: 2.2rem;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-serif);
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.03em;
+        }
+
+        .section-header .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-style: italic;
+            margin-top: 0.3rem;
+        }
+
+        .section-header::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: var(--gold);
+            margin: 0.8rem auto 0;
+            border-radius: 2px;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .menu-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-dark);
+            transition: var(--transition);
+            border: 1px solid var(--border-dark);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--gold));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .menu-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(212, 160, 86, 0.3);
+        }
+
+        .menu-card:hover::before {
+            opacity: 1;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-name {
+            font-family: var(--font-serif);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .item-price {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--gold-light);
+            white-space: nowrap;
+            background: rgba(212, 160, 86, 0.1);
+            padding: 0.2rem 0.7rem;
+            border-radius: 50px;
+            border: 1px solid rgba(212, 160, 86, 0.2);
+        }
+
+        .item-description {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.55;
+            flex-grow: 1;
+        }
+
+        .item-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px dashed var(--border-dark);
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.25rem 0.7rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-dark);
+        }
+
+        .site-footer {
+            background: rgba(26, 21, 18, 0.95);
+            border-top: 1px solid var(--border-dark);
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: auto;
+        }
+
+        .site-footer .heart {
+            color: #e74c3c;
+            display: inline-block;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        .site-footer .hours {
+            color: var(--gold);
+            font-style: italic;
+            margin-top: 0.4rem;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.15); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+        }
+
+        @media (max-width: 768px) {
+            .items-grid {
+                grid-template-columns: 1fr;
+                gap: 0.9rem;
+            }
+            .menu-card {
+                padding: 1.2rem;
+            }
+            .category-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .site-header h1 {
+                font-size: 1.9rem;
+            }
+            .item-header {
+                flex-direction: column;
+                gap: 0.4rem;
+            }
+            .item-price {
+                align-self: flex-start;
+                font-size: 0.95rem;
+            }
+            .category-nav {
+                gap: 0.5rem;
+            }
+            .category-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <h1>کافه سلی</h1>        
+    </header>
+
+<main class="menu-container">
+    {% if selected_category %}
+        <!-- Show items for selected category -->
+        <div class="section-header">
+            <span class="section-icon">{{ selected_category.icon }}</span>
+            <h2>{{ selected_category.name }}</h2>
+            <p class="section-subtitle">دسته‌بندی منو</p>
+        </div>
+
+        <div class="back-link">
+            <a href="{% url 'menu' %}" class="back-btn">← بازگشت به دسته‌ها</a>
+        </div>
+
+        <div class="items-grid">
+            {% for item in items %}
+            <div class="menu-card">
+                <div class="item-header">
+                    <span class="item-name">{{ item.name }}</span>
+                    <span class="item-price">{{ item.price_formatted }}</span>
+                </div>
+                <p class="item-description">{{ item.description }}</p>
+                {% if item.tag_list %}
+                <div class="item-tags">
+                    {% for tag in item.tag_list %}
+                    <span class="tag">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% empty %}
+            <p>هیچ آیتمی در این دسته وجود ندارد.</p>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <!-- Show category cubes -->
+        <div class="category-grid">
+            {% for category in categories %}
+            <a href="{% url 'menu' %}?category={{ category.id }}" class="category-cube" 
+               style="background-image: url('{{ category.image.url }}');">
+                <span class="cube-icon">{{ category.icon }}</span>
+                <span class="cube-title">{{ category.name }}</span>
+            </a>
+            {% empty %}
+            <p>هیچ دسته‌ای وجود ندارد.</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+</main>
+
+    <footer class="site-footer">
+        <p>ساخته شده با <span class="heart">❤</span> در کافه سلی</p>
+        <p class="hours">☀ همه روزه باز · ۷ صبح تا ۷ عصر</p>
+        <p style="margin-top:0.5rem; font-size:0.8rem; opacity:0.6;">خیابان اصلی ۱۲۳ · شهر شما · (۵۵۵) ۱۲۳-۴۵۶۷</p>
+    </footer>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.category-btn');
+        const sections = document.querySelectorAll('.menu-section');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                buttons.forEach(b => b.classList.remove('active'));
+                // Add active to clicked button
+                this.classList.add('active');
+
+                const filter = this.dataset.category;
+                if (filter === 'all') {
+                    sections.forEach(section => section.style.display = 'block');
+                } else {
+                    sections.forEach(section => {
+                        if (section.dataset.categoryId === filter) {
+                            section.style.display = 'block';
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+
+        // Initially show all sections (or you can show only the first category)
+        sections.forEach(section => section.style.display = 'block');
+    });
+</script>
+</body>
+</html>
