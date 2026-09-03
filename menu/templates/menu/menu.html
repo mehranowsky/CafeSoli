@@ -44,6 +44,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* ===== Header ===== */
         .site-header {
             text-align: center;
             padding: 3rem 1.5rem 2rem;
@@ -74,48 +75,95 @@
             width: 100%;
         }
 
-        /* ===== Category Navigation Buttons ===== */
-        .category-nav {
+        /* ===== Category Cubes (main page) ===== */
+        .category-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.8rem;
+            gap: 2rem;
             justify-content: center;
-            margin-bottom: 2.5rem;
         }
 
-        .category-btn {
+        .category-cube {
+            flex: 1 1 260px;
+            max-width: 320px;
+            min-height: 260px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 16px;
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-dark);
+            border: 1px solid var(--border-dark);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        /* Dark overlay for readability */
+        .category-cube::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.568);
+            transition: var(--transition);
+        }
+
+        .category-cube:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(212, 160, 86, 0.4);
+        }
+
+        .category-cube:hover::before {
+            background: rgba(0, 0, 0, 0.329);
+        }
+
+        .cube-icon {
+            font-size: 3.5rem;
+            z-index: 1;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+        }
+
+        .cube-title {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 700;
+            z-index: 1;
+            letter-spacing: 0.03em;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ===== Back Button ===== */
+        .back-link {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn {
+            display: inline-block;
             background: var(--bg-card);
-            color: var(--text-secondary);
+            color: var(--gold-light);
             border: 1px solid var(--border-dark);
             border-radius: 50px;
             padding: 0.6rem 1.5rem;
+            text-decoration: none;
             font-size: 0.9rem;
             font-weight: 600;
-            letter-spacing: 0.04em;
-            cursor: pointer;
             transition: var(--transition);
-            text-transform: capitalize;
         }
 
-        .category-btn:hover {
+        .back-btn:hover {
             background: var(--bg-card-hover);
-            color: var(--gold-light);
             border-color: rgba(212, 160, 86, 0.3);
-            box-shadow: var(--shadow-dark);
         }
 
-        .category-btn.active {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-            box-shadow: 0 4px 14px rgba(193, 122, 60, 0.4);
-        }
-
-        /* ===== Category Section Spacing ===== */
-        .menu-section {
-            margin-bottom: 3rem;
-        }
-
+        /* ===== Section Header ===== */
         .section-header {
             text-align: center;
             margin-bottom: 2rem;
@@ -152,12 +200,14 @@
             border-radius: 2px;
         }
 
+        /* ===== Items Grid ===== */
         .items-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.2rem;
         }
 
+        /* ===== Menu Card ===== */
         .menu-card {
             background: var(--bg-card);
             border-radius: 16px;
@@ -248,6 +298,7 @@
             border: 1px solid var(--border-dark);
         }
 
+        /* ===== Footer ===== */
         .site-footer {
             background: rgba(26, 21, 18, 0.95);
             border-top: 1px solid var(--border-dark);
@@ -277,7 +328,19 @@
             75% { transform: scale(1.1); }
         }
 
+        /* ===== Responsive ===== */
         @media (max-width: 768px) {
+            .category-cube {
+                flex: 1 1 100%;
+                max-width: 100%;
+                min-height: 200px;
+            }
+            .cube-icon {
+                font-size: 3rem;
+            }
+            .cube-title {
+                font-size: 2rem;
+            }
             .items-grid {
                 grid-template-columns: 1fr;
                 gap: 0.9rem;
@@ -285,15 +348,20 @@
             .menu-card {
                 padding: 1.2rem;
             }
-            .category-btn {
-                padding: 0.5rem 1rem;
-                font-size: 0.8rem;
-            }
         }
 
         @media (max-width: 480px) {
             .site-header h1 {
                 font-size: 1.9rem;
+            }
+            .category-cube {
+                min-height: 180px;
+            }
+            .cube-icon {
+                font-size: 2.5rem;
+            }
+            .cube-title {
+                font-size: 1.8rem;
             }
             .item-header {
                 flex-direction: column;
@@ -303,19 +371,12 @@
                 align-self: flex-start;
                 font-size: 0.95rem;
             }
-            .category-nav {
-                gap: 0.5rem;
-            }
-            .category-btn {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.75rem;
-            }
         }
     </style>
 </head>
 <body>
     <header class="site-header">
-        <h1>کافه سلی</h1>        
+        <h1>کافه سُلی</h1>        
     </header>
 
 <main class="menu-container">
@@ -369,42 +430,9 @@
 </main>
 
     <footer class="site-footer">
-        <p>ساخته شده با <span class="heart">❤</span> در کافه سلی</p>
-        <p class="hours">☀ همه روزه باز · ۷ صبح تا ۷ عصر</p>
-        <p style="margin-top:0.5rem; font-size:0.8rem; opacity:0.6;">خیابان اصلی ۱۲۳ · شهر شما · (۵۵۵) ۱۲۳-۴۵۶۷</p>
+        <p>ساخته شده با <span class="heart">❤</span> در کافه سُلی</p>        
+        <p style="margin-top:0.5rem; font-size:0.8rem; opacity:0.6;">بابل، شهرک بهزاد</p>
     </footer>
 
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const buttons = document.querySelectorAll('.category-btn');
-        const sections = document.querySelectorAll('.menu-section');
-
-        buttons.forEach(btn => {
-            btn.addEventListener('click', function() {
-                // Remove active class from all buttons
-                buttons.forEach(b => b.classList.remove('active'));
-                // Add active to clicked button
-                this.classList.add('active');
-
-                const filter = this.dataset.category;
-                if (filter === 'all') {
-                    sections.forEach(section => section.style.display = 'block');
-                } else {
-                    sections.forEach(section => {
-                        if (section.dataset.categoryId === filter) {
-                            section.style.display = 'block';
-                        } else {
-                            section.style.display = 'none';
-                        }
-                    });
-                }
-            });
-        });
-
-        // Initially show all sections (or you can show only the first category)
-        sections.forEach(section => section.style.display = 'block');
-    });
-</script>
 </body>
 </html>

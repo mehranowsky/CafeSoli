@@ -46,4 +46,4 @@ class MenuItem(models.Model):
         return self.name
 
     def price_formatted(self):
-        return f"{self.price:,} Toman"
+        return f"{self.price:,} تومان"
